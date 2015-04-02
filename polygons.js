@@ -177,22 +177,25 @@ function createPolygons( polygons )
 
 }
 
-function getPolygonObjects( count, radius )
+function getPolygonObjects( count, radius, jitter, delta )
 {
     count = count || 50;
     radius = radius || 20;
     var objects = [];
     var space = ( 1 / count );
+
+    jitter = jitter || 0;
+    delta = delta || space;
+
     for ( var i = 0; i <= count; i++ )
     {
-        for ( var j = 0; j <= count; j++ ) {
+        for ( var j = 0; j < count; j++ ) {
             var poly =
             {
+                x:              i * space        + ( Math.random() * jitter * delta ),
+                y:              1 - j * space    + ( Math.random() * jitter * delta ),
 
-                x:              i * space        + ( Math.random() -.5 ) * space,
-                y:              1 - j * space    + ( Math.random() -.5 ) * space,
-
-                radius:         radius + Math.random() *  radius * .5,
+                radius:         radius + Math.random() * radius,
                 sides:          Math.floor( 3 + Math.random() * 6 ),
                 angle:          Math.PI * 2 * Math.random(),
 
@@ -208,6 +211,8 @@ function getPolygonObjects( count, radius )
 
 function animatePolygons( geom )
 {
+
+    var tf = geom.attributes.polygon_tf;
     var attr = geom.attributes.polygon_rsa;
     var array = attr.array;
     var count = array.length;
@@ -217,13 +222,14 @@ function animatePolygons( geom )
     }
     attr.needsUpdate = true;
 
+    //move
     attr = geom.attributes.position;
     array = attr.array;
     count = array.length;
     for( i = 0; i < count; i+= attr.itemSize )
     {
-        array[ i + 1 ] += .001;
-        if( array[ i + 1 ] >= 1.05 )array[ i + 1 ] = -1 - Math.random() * .1;
+        array[ i + 1 ] += .0025;
+        if( array[ i + 1 ] >= 1 )array[ i + 1 ] = -1;
     }
     attr.needsUpdate = true;
 }
