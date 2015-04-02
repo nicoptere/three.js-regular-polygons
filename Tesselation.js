@@ -24,8 +24,8 @@ var Tesselation = ( function( exports )
             radius : radius || 1,
             sides : sides || 3,
             angle : angle || 0,
-            thickness : thickness || 0,
-            filled : filled || 1
+            thickness : thickness || 2.5,
+            filled : filled || 0
         }
     }
 
@@ -36,17 +36,20 @@ var Tesselation = ( function( exports )
 
         var scale = Math.min( width, height );
 
+        var rad = radius / scale;
         var apothem = getApothem( radius, 3 ) / scale;
+        var difrad = radius - apothem;
+
         var side = sideLength( radius, 3 ) / scale;
 
         console.log( apothem, side, radius )
 
         return [
-            initPolygon( .5, .5, radius, 3, PI_2 ),
-            initPolygon( .5, .5 + apothem,radius, 3, -PI_2 ),
+            initPolygon( .5, .5, radius, 6, PI_2 ),
+            initPolygon( .5, .5 + apothem,radius, 5, -PI_2 ),
 
-            initPolygon( .5 + side *.5, .5, radius, 3, PI_2 ),
-            initPolygon( .5, .5 + apothem,radius, 3, -PI_2 ),
+            initPolygon( .5, .5, radius, 4, PI_2 ),
+            initPolygon( .5 + side / 2, .5,radius, 3, -PI_2 ),
         ]
 
     }

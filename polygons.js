@@ -248,7 +248,7 @@ function onShaderLoaded()
     //front.material.uniforms.texture.value = fire;
     //foregroundScene.add( front );
 
-    var objects = Tesselation.regularTriangle( 50, 500, 1000 );
+    var objects = Tesselation.regularTriangle( 20, 500, 1000 );
     front = createPolygons(objects);
     front.material.uniforms.texture.value = fire;
     foregroundScene.add( front );

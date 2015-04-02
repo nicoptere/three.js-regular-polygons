@@ -42,17 +42,22 @@ void main()
     float distance = length( delta );
     if( thickness != 0. )
     {
-        if( distance <= ( radius + thickness ) || distance >= ( radius - thickness ) )
+        if( distance <= ( radius + thickness )  )
         {
+            color.a = smoothstep( ( radius + thickness ), radius, distance );
 
-
-                color.a = smoothstep( ( radius + thickness ), radius, distance );
-
-                //if object is not filled
-                if( !bool( tf[ 1 ] ) )
+            //if object is not filled
+            if( !bool( tf[ 1 ] ) )
+            {
+                if( distance >= ( radius - thickness ) )
                 {
                     color.a *= smoothstep( ( radius - thickness ), radius, distance );
                 }
+                else
+                {
+                    color.a = 0.;
+                }
+            }
 
         }
         else
