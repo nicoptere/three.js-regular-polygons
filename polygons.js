@@ -3,7 +3,6 @@ var camera,
     scene,
     foregroundScene,
     renderer,
-    domElement,
     size,
     back,
     front;
@@ -55,13 +54,16 @@ function resize()
 
 function render()
 {
+
+    requestAnimationFrame( render );
+
     //important !
     //updates the size of the polygon materials uiform;
     size.x = window.innerWidth;
     size.y = window.innerHeight;
 
     animatePolygons( back.geometry );
-    animatePolygons( front.geometry );
+    //animatePolygons( front.geometry );
 
     renderer.clear();
     renderer.render( backgroundScene, camera );
@@ -72,7 +74,6 @@ function render()
     renderer.clearDepth();
     renderer.render( foregroundScene, camera );
 
-    setTimeout( render, 1000 / 60 );
 }
 
 
@@ -207,7 +208,6 @@ function getPolygonObjects( count, radius )
 
 function animatePolygons( geom )
 {
-    return;
     var attr = geom.attributes.polygon_rsa;
     var array = attr.array;
     var count = array.length;
@@ -223,7 +223,7 @@ function animatePolygons( geom )
     for( i = 0; i < count; i+= attr.itemSize )
     {
         array[ i + 1 ] += .001;
-        if( array[ i + 1 ] >= 1 )array[ i + 1 ] = -1;
+        if( array[ i + 1 ] >= 1.05 )array[ i + 1 ] = -1 - Math.random() * .1;
     }
     attr.needsUpdate = true;
 }
@@ -248,7 +248,7 @@ function onShaderLoaded()
     //front.material.uniforms.texture.value = fire;
     //foregroundScene.add( front );
 
-    var objects = Tesselation.regularTriangle( 20, 500, 1000 );
+    var objects = Tesselation.regularTriangle( 100, size.x, size.y );
     front = createPolygons(objects);
     front.material.uniforms.texture.value = fire;
     foregroundScene.add( front );
@@ -256,6 +256,5 @@ function onShaderLoaded()
 
     render();
 }
-
 var sl = new ShaderLoader();
 sl.loadShaders( "./glsl/", onShaderLoaded );

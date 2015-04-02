@@ -19,6 +19,7 @@ void main()
 
     center = ( .5 + position.xy * .5 ) * size;
 
+
     //computes the radius of the equilateral
     //triangle that encompasses the polygon
 

@@ -6,6 +6,19 @@ var Tesselation = ( function( exports )
     var PI2 = Math.PI * 2;
     var PI_2 = Math.PI / 2;
 
+    function initPolygon( x, y, radius, sides, angle, thickness, filled )
+    {
+        return {
+            x : x || 0,
+            y : y || 0,
+            radius : radius || 1,
+            sides : sides || 3,
+            angle : angle || 0,
+            thickness : thickness || 5,
+            filled : filled || 0
+        }
+    }
+
     function getApothem( radius, sides )
     {
         return radius * Math.cos( Math.PI / sides );
@@ -16,72 +29,34 @@ var Tesselation = ( function( exports )
         return 2 * radius * Math.sin( Math.PI / sides );
     }
 
-    function initPolygon( x, y, radius, sides, angle, thickness, filled )
-    {
-        return {
-            x : x || 0,
-            y : y || 0,
-            radius : radius || 1,
-            sides : sides || 3,
-            angle : angle || 0,
-            thickness : thickness || 2.5,
-            filled : filled || 0
-        }
-    }
-
-    function gettrianglePatch( radius, width, height )
+    function regularTriangle( radius, width, height )
     {
         width = width || window.innerWidth;
         height = height || window.innerHeight;
 
-        var scale = Math.min( width, height );
+        var scale = width;
 
         var rad = radius / scale;
         var apothem = getApothem( radius, 3 ) / scale;
-        var difrad = radius - apothem;
-
         var side = sideLength( radius, 3 ) / scale;
 
-        console.log( apothem, side, radius )
+        var array = [];
+        var an = 0;
+        var step = PI2 / 6;
 
-        return [
-            initPolygon( .5, .5, radius, 6, PI_2 ),
-            initPolygon( .5, .5 + apothem,radius, 5, -PI_2 ),
-
-            initPolygon( .5, .5, radius, 4, PI_2 ),
-            initPolygon( .5 + side / 2, .5,radius, 3, -PI_2 ),
-        ]
-
-    }
-
-    function regularTriangle( radius, width, height )
-    {
-        return gettrianglePatch(radius,width, height);
-        var scale = Math.min( width / radius, height/ radius );
-
-
-        var objects = [];
-        var inc = 1/scale;
-        var step = Math.PI * 2 / 6;
         for( var i = 0; i < 6; i++ )
         {
-            var angle = i * step;
-            objects.push(
-                {
-                    x:.5 + Math.cos( angle ) / apothem,
-                    y:.5 + Math.sin( angle ) / apothem,
+            an = i * step;
 
-                    radius:         radius,
-                    sides:          3,
-                    angle:          i * step,
-
-                    thickness:      2,
-                    filled:         0
-                }
-
-            );
+            var p = initPolygon(    .5 + Math.cos( an ) * rad,
+                                    .5 + Math.sin( an ) * rad,
+                                    radius,
+                                    3,
+                                    i * step );
+            array.push( p )
         }
-        return objects;
+        return array;
+
     }
 
 
