@@ -192,7 +192,7 @@ function getPolygonObjects( count, radius, jitter, delta )
 
     for ( var i = 0; i <= count; i++ )
     {
-        for ( var j = 0; j < count; j++ ) {
+        for ( var j = 0; j <= count; j++ ) {
             var poly =
             {
                 x:              i * space        + ( Math.random() * jitter * delta ),
@@ -215,6 +215,7 @@ function getPolygonObjects( count, radius, jitter, delta )
 function animatePolygons( geom )
 {
 
+    return;
     var tf = geom.attributes.polygon_tf;
     var attr = geom.attributes.polygon_rsa;
     var array = attr.array;
@@ -224,7 +225,6 @@ function animatePolygons( geom )
         array[i + 2] += Math.PI / 180 * 2;
     }
     attr.needsUpdate = true;
-
     //move
     attr = geom.attributes.position;
     array = attr.array;
@@ -251,7 +251,7 @@ function onShaderLoaded()
 
 
     // polygons in the background
-    back = createPolygons( getPolygonObjects( 20, 10 ) );
+    back = createPolygons( getPolygonObjects( 3, 100 ) );
     back.material.uniforms.texture.value = ice;
     backgroundScene.add( back );
 

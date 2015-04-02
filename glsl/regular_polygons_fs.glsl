@@ -62,7 +62,7 @@ void main()
         }
         else
         {
-            discard;
+            //discard;
             color.a = .1;
         }
     }
@@ -74,7 +74,7 @@ void main()
         }
         else
         {
-            discard;
+            //discard;
         }
     }
 

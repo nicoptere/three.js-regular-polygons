@@ -54,7 +54,7 @@ var Tesselation = ( function( exports )
                                     3,
                                     i * step,
                                     2.5,
-                                    0 );
+                                    1 );
             array.push( p )
         }
 
