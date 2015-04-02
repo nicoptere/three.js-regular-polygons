@@ -249,14 +249,20 @@ function onShaderLoaded()
         fire.needsUpdate = true;
     } );
 
+
+    // polygons in the background
     back = createPolygons( getPolygonObjects( 20, 10 ) );
     back.material.uniforms.texture.value = ice;
     backgroundScene.add( back );
 
-    //front = createPolygons( getPolygonObjects( 8, 30 ) );
-    //front.material.uniforms.texture.value = fire;
-    //foregroundScene.add( front );
 
+    // polygons on top
+    var objects = Tesselation.regularTriangle( 100, size.x, size.y );
+    front = createPolygons(objects);
+    front.material.uniforms.texture.value = fire;
+    foregroundScene.add( front );
+
+    // regular mesh in between
     sphere = new THREE.Object3D();
     scene.add( sphere );
 
@@ -268,17 +274,9 @@ function onShaderLoaded()
     grid.scale.multiplyScalar( 50 );
     sphere.add( grid );
 
-
-
     var light = new THREE.PointLight( 0xFFFFFF, 1.5, 1000 );
     light.position.set( 0, 0, 150 );
     scene.add( light );
-
-    var objects = Tesselation.regularTriangle( 100, size.x, size.y );
-    front = createPolygons(objects);
-    front.material.uniforms.texture.value = fire;
-    foregroundScene.add( front );
-
 
     render();
 }
