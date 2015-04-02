@@ -48,17 +48,17 @@ var Tesselation = ( function( exports )
         {
             an = i * step;
 
-            var p = initPolygon(    .5 + Math.cos( an ) * rad *.5,
-                                    .5 + Math.sin( an ) * rad *.5,
-                                    radius,
+            var p = initPolygon(    .5 + Math.cos( an ) * rad,
+                                    .5 + Math.sin( an ) * rad,
+                                    radius * .65,
                                     3,
                                     i * step,
-                                    1.5,
+                                    2.5,
                                     0 );
             array.push( p )
         }
 
-        array.push( initPolygon(.5,.5,getApothem(radius,6)*2,6, PI / 6, 2.5, 0 ) );
+        array.push( initPolygon(.5,.5,getApothem(radius,6)*2,6, PI / 6, 3, 0 ) );
 
         return array;
 

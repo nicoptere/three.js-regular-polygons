@@ -5,6 +5,7 @@ var camera,
     renderer,
     size,
     back,
+    sphere,
     front;
 
 function init( )
@@ -19,7 +20,6 @@ function init( )
 
     camera = new THREE.PerspectiveCamera(40, width / height, 0.01, 10e6);
     camera.position.z = 320;
-    camera.position.y = 30;
 
     //setup renderer
     renderer =  new THREE.WebGLRenderer( { alpha: true, antialias:true });
@@ -73,6 +73,9 @@ function render()
 
     renderer.clearDepth();
     renderer.render( foregroundScene, camera );
+
+    sphere.rotation.x += Math.PI / 540;
+    sphere.rotation.y += Math.PI / 800;
 
 }
 
@@ -253,6 +256,23 @@ function onShaderLoaded()
     //front = createPolygons( getPolygonObjects( 8, 30 ) );
     //front.material.uniforms.texture.value = fire;
     //foregroundScene.add( front );
+
+    sphere = new THREE.Object3D();
+    scene.add( sphere );
+
+    var flat = new THREE.Mesh( new THREE.IcosahedronGeometry(1,3), new THREE.MeshPhongMaterial({color:0x303030, transparent:true, shading:THREE.FlatShading, opacity:.9 } ) );
+    flat.scale.multiplyScalar( 50 );
+    sphere.add( flat );
+
+    var grid = new THREE.Mesh( new THREE.IcosahedronGeometry(1,3), new THREE.MeshPhongMaterial({color:0x505050, transparent:true, shading:THREE.FlatShading, wireframe:true } ) );
+    grid.scale.multiplyScalar( 50 );
+    sphere.add( grid );
+
+
+
+    var light = new THREE.PointLight( 0xFFFFFF, 1.5, 1000 );
+    light.position.set( 0, 0, 150 );
+    scene.add( light );
 
     var objects = Tesselation.regularTriangle( 100, size.x, size.y );
     front = createPolygons(objects);
