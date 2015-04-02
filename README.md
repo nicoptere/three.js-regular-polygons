@@ -5,4 +5,4 @@ proof of concept to render 2d regular polygons in THREE.js using the GPU.
 <img src="https://github.com/nicoptere/three.js-regular-polygons/blob/master/img/cover.png"><br>
 live demo</a>
 
-countless bugs and highly unstable.
+barely usable as such but it gives the idea :)
