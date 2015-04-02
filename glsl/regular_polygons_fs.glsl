@@ -40,21 +40,36 @@ void main()
 
     //computes the alpha
     float distance = length( delta );
-    if( distance <= ( radius + thickness ) || distance >= ( radius - thickness ) )
+    if( thickness != 0. )
     {
-
-        color.a = smoothstep( ( radius + thickness ), radius, distance );
-
-        //if object is not filled
-        if( !bool( tf[ 1 ] ) )
+        if( distance <= ( radius + thickness ) || distance >= ( radius - thickness ) )
         {
-            color.a *= smoothstep( ( radius - thickness ), radius, distance );
-        }
 
+
+                color.a = smoothstep( ( radius + thickness ), radius, distance );
+
+                //if object is not filled
+                if( !bool( tf[ 1 ] ) )
+                {
+                    color.a *= smoothstep( ( radius - thickness ), radius, distance );
+                }
+
+        }
+        else
+        {
+            discard;
+        }
     }
     else
     {
-        discard;
+        if( distance < radius )
+        {
+            color.a = 1.;
+        }
+        else
+        {
+            discard;
+        }
     }
 
     gl_FragColor = color;

@@ -85,8 +85,7 @@ function createPolygons( polygons )
     var indices             = new Int16Array( polygonCount * 3 );
     var vertices            = new Float32Array( polygonCount * 3 * 3 );
 
-
-    //radius / sides / offset angle
+    //radius / sides / angle
     var RSA        = new Float32Array( polygonCount * 3 * 3 );
 
     //thickness / filled
@@ -96,10 +95,10 @@ function createPolygons( polygons )
     for( i = 0; i < polygonCount; i++ )
     {
 
-        //radius / sides / offset angle
+        //radius / sides / angle
         var _r = polygons[ i ].radius;
         var _s = polygons[ i ].sides;
-        var _a = polygons[ i ].offsetAngle;
+        var _a = polygons[ i ].angle;
 
         //thickness / filled
         var _t = polygons[ i ].thickness;
@@ -194,7 +193,7 @@ function getPolygonObjects( count, radius )
 
                 radius:         radius + Math.random() *  radius * .5,
                 sides:          Math.floor( 3 + Math.random() * 6 ),
-                offsetAngle:    Math.PI * 2 * Math.random(),
+                angle:          Math.PI * 2 * Math.random(),
 
                 thickness:      Math.random() * 5,
                 filled:         ( Math.random() >.5 )? 1 : 0
@@ -206,9 +205,9 @@ function getPolygonObjects( count, radius )
     return objects;
 }
 
-var done = false;
 function animatePolygons( geom )
 {
+    return;
     var attr = geom.attributes.polygon_rsa;
     var array = attr.array;
     var count = array.length;
@@ -245,9 +244,15 @@ function onShaderLoaded()
     back.material.uniforms.texture.value = ice;
     backgroundScene.add( back );
 
-    front = createPolygons( getPolygonObjects( 8, 30 ) );
+    //front = createPolygons( getPolygonObjects( 8, 30 ) );
+    //front.material.uniforms.texture.value = fire;
+    //foregroundScene.add( front );
+
+    var objects = Tesselation.regularTriangle( 50, 500, 1000 );
+    front = createPolygons(objects);
     front.material.uniforms.texture.value = fire;
     foregroundScene.add( front );
+
 
     render();
 }
