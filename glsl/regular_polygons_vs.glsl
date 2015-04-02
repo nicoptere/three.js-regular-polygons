@@ -17,8 +17,26 @@ void main()
     rsa = polygon_rsa;
     tf = polygon_tf;
 
-    center = ( .5 + position.xy * .5 ) * size;
 
+
+    float r0 = size.x / size.y;
+    float r1 = size.y / size.x;
+    float ratioX;
+    float ratioY;
+    if( r0 > r1 ) // landscape
+    {
+        ratioX = 1.;
+        ratioY = r0;
+    }
+    else // portrait
+    {
+        ratioX = r1;
+        ratioY = 1.;
+    }
+
+    center = ( .5 + position.xy * .5 ) * size;
+    //center.x *= ratioX * size.x;
+    //center.y *= ratioY * size.x;
 
     //computes the radius of the equilateral
     //triangle that encompasses the polygon
@@ -36,14 +54,10 @@ void main()
 
     float radius    = 2. * ( 1. / max( size.x, size.y ) ) * ( ( rsa[ 0 ] + tf[ 0 ] ) / cos( PI / 3. ) );
 
-    //width height ratio to expand the height of our triangle
-
-    float ratio = size.x / size.y;
-
     //computes the triangle's position
     vec3 p = position;
-    p.x += cos( p.z ) * radius;
-    p.y += sin( p.z ) * radius * ratio;
+    p.x += cos( p.z ) * radius * ratioX;
+    p.y += sin( p.z ) * radius * ratioY;
     p.z = 0.;
 
     //howdy!

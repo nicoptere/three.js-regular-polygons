@@ -62,18 +62,19 @@ void main()
         }
         else
         {
-            discard;
+            //discard;
+            color.a = .1;
         }
     }
     else
     {
         if( distance < radius )
         {
-            color.a = 1.;
+            color.a = .1;
         }
         else
         {
-            discard;
+            //discard;
         }
     }
 

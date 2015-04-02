@@ -266,11 +266,12 @@ function onShaderLoaded()
     sphere = new THREE.Object3D();
     scene.add( sphere );
 
-    var flat = new THREE.Mesh( new THREE.IcosahedronGeometry(1,3), new THREE.MeshPhongMaterial({color:0x303030, transparent:true, shading:THREE.FlatShading, opacity:.9 } ) );
+    var geom = new THREE.IcosahedronGeometry(1,1);
+    var flat = new THREE.Mesh( geom, new THREE.MeshPhongMaterial({color:0x303030, transparent:true, shading:THREE.FlatShading, opacity:.9 } ) );
     flat.scale.multiplyScalar( 50 );
     sphere.add( flat );
 
-    var grid = new THREE.Mesh( new THREE.IcosahedronGeometry(1,3), new THREE.MeshPhongMaterial({color:0x505050, transparent:true, shading:THREE.FlatShading, wireframe:true } ) );
+    var grid = new THREE.Mesh( geom, new THREE.MeshPhongMaterial({color:0x505050, transparent:true, shading:THREE.FlatShading, wireframe:true } ) );
     grid.scale.multiplyScalar( 50 );
     sphere.add( grid );
 
