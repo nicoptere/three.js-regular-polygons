@@ -209,8 +209,8 @@ function getPolygonObjects( count, radius, jitter, delta )
                 sides:          3 + i % 9,      //Math.floor( 3 + Math.random() * 6 ),
                 angle:          j%4 * Math.PI * 2 / 4,
 
-                thickness:      3,
-                filled:         ( Math.random() >.5 )? 1 : 0//0// t < 0 ? 1 : i % 2 //
+                thickness:      ( j / count ) * count,
+                filled:         ( j + i ) % 2 //( Math.random() >.5 )? 1 : 0//0// t < 0 ? 1 : i % 2 //
 
             };
             objects.push(poly);
