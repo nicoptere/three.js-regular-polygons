@@ -42,10 +42,12 @@ void main()
     }
     center = position.xy * size;
 
-    float ratio = min( ratioX, ratioY );
-    center = ( .5 + position.xy * .5 );
-    center.x = map( position.x, -1., 1., 0., size.x * ratio  );
-    center.y = map( position.y, -1., 1., 0., size.y * ratio  );
+    //float ratio = min( ratioX, ratioY );
+    float ratio = min( r0, r1 );
+    ratio = min( ratioX, ratioY );
+
+    center = vec2(  map( position.x, -1., 1., 0., size.x * ratio ),
+                    map( position.y, -1., 1., 0., size.y * ratio )  );
 
 
     float radius    = 2. * ( 1. / max( size.x, size.y ) ) * ( ( rsa[ 0 ] + tf[ 0 ] ) / cos( PI / 3. ) );
@@ -55,8 +57,8 @@ void main()
     p.x = map( position.x, -1., 1., 0., ratio * 2. ) - ratio;
     p.y = map( position.y, -1., 1., 0., ratio * 2. ) - ratio;
 
-    p.x += cos( p.z + rsa[ 2 ] ) * radius * ratioX;
-    p.y += sin( p.z + rsa[ 2 ] ) * radius * ratioY;
+    p.x += cos( p.z ) * radius * ratioX;
+    p.y += sin( p.z ) * radius * ratioY;
     p.z = 0.;
 
     //howdy!

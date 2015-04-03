@@ -54,8 +54,8 @@ var Tesselation = ( function( exports )
                                     3,
                                     i * step,
                                     2.5,
-                                    1 );
-            array.push( p )
+                                    0 );
+            array.push( p );
         }
 
         array.push( initPolygon(.5,.5,getApothem(radius,6)*2,6, PI / 6, 3, 0 ) );

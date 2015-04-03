@@ -41,6 +41,7 @@ function resize()
 
     var width = window.innerWidth;
     var height = window.innerHeight;
+    width = height * (29.7 / 21 );
 
     renderer.setSize(width, height);
     camera.aspect = width / height;
@@ -57,13 +58,16 @@ function render()
 
     requestAnimationFrame( render );
 
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    width = height * ( 29.7 / 21 );
     //important !
     //updates the size of the polygon materials uiform;
-    size.x = window.innerWidth;
-    size.y = window.innerHeight;
+    size.x = width;//window.innerWidth;
+    size.y = height;//window.innerHeight;
 
-    animatePolygons( back.geometry );
-    //animatePolygons( front.geometry );
+    animatePolygons( back.geometry, true );
+    animatePolygons( front.geometry );
 
     renderer.clear();
     renderer.render( backgroundScene, camera );
@@ -192,18 +196,21 @@ function getPolygonObjects( count, radius, jitter, delta )
 
     for ( var i = 0; i <= count; i++ )
     {
-        for ( var j = 0; j <= count; j++ ) {
+        for ( var j = 0; j <= count; j++ )
+        {
+
+
             var poly =
             {
                 x:              i * space        + ( Math.random() * jitter * delta ),
                 y:              1 - j * space    + ( Math.random() * jitter * delta ),
 
-                radius:         radius + Math.random() * radius,
-                sides:          Math.floor( 3 + Math.random() * 6 ),
-                angle:          Math.PI * 2 * Math.random(),
+                radius:         radius + ( Math.random() -.5 ) * radius * jitter,
+                sides:          3 + i % 9,      //Math.floor( 3 + Math.random() * 6 ),
+                angle:          j%4 * Math.PI * 2 / 4,
 
-                thickness:      Math.random() * 5,
-                filled:         ( Math.random() >.5 )? 1 : 0
+                thickness:      3,
+                filled:         ( Math.random() >.5 )? 1 : 0//0// t < 0 ? 1 : i % 2 //
 
             };
             objects.push(poly);
@@ -212,10 +219,8 @@ function getPolygonObjects( count, radius, jitter, delta )
     return objects;
 }
 
-function animatePolygons( geom )
+function animatePolygons( geom, rotateOnly )
 {
-
-    return;
     var tf = geom.attributes.polygon_tf;
     var attr = geom.attributes.polygon_rsa;
     var array = attr.array;
@@ -225,14 +230,15 @@ function animatePolygons( geom )
         array[i + 2] += Math.PI / 180 * 2;
     }
     attr.needsUpdate = true;
+    if( rotateOnly ) return;
     //move
     attr = geom.attributes.position;
     array = attr.array;
     count = array.length;
     for( i = 0; i < count; i+= attr.itemSize )
     {
-        array[ i + 1 ] += .0025;
-        if( array[ i + 1 ] >= 1 )array[ i + 1 ] = -1;
+        array[ i + 1 ] += .015;
+        if( array[ i + 1 ] >= 1.1 )array[ i + 1 ] = -1.1;
     }
     attr.needsUpdate = true;
 }
@@ -251,16 +257,18 @@ function onShaderLoaded()
 
 
     // polygons in the background
-    back = createPolygons( getPolygonObjects( 3, 100 ) );
+    back = createPolygons( getPolygonObjects( 20, 10 ) );
     back.material.uniforms.texture.value = ice;
     backgroundScene.add( back );
 
-
     // polygons on top
-    var objects = Tesselation.regularTriangle( 100, size.x, size.y );
-    front = createPolygons(objects);
+    front = createPolygons( getPolygonObjects( 8, 30, 1, .1 ) );
+    //var objects = Tesselation.regularTriangle( 100, size.x, size.y );
+    //front = createPolygons(objects);
     front.material.uniforms.texture.value = fire;
     foregroundScene.add( front );
+
+
 
     // regular mesh in between
     sphere = new THREE.Object3D();

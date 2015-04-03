@@ -24,7 +24,7 @@ void main()
 {
 
     //tries to crop a color on the texture
-    vec4 color = texture2D( texture, gl_FragCoord.xy / size );
+    vec4 color = texture2D( texture, center.xy / size );
     if( color.r == null )
     {
         color = vec4( gl_FragCoord.xy / size, 0., 1. );
@@ -42,39 +42,48 @@ void main()
     float distance = length( delta );
     if( thickness != 0. )
     {
-        if( distance <= ( radius + thickness )  )
+
+        float radiusOut = ( radius + thickness ) ;
+
+        if( distance <= radiusOut )
         {
-            color.a = smoothstep( ( radius + thickness ), radius, distance );
+
+            color.a = smoothstep( radiusOut + 1., radius, distance );
 
             //if object is not filled
+
             if( !bool( tf[ 1 ] ) )
             {
-                if( distance >= ( radius - thickness ) )
+
+                float radiusIn = ( radius - thickness ) ;
+
+                if( distance >= radiusIn )
                 {
-                    color.a *= smoothstep( ( radius - thickness ), radius, distance );
+                    color.a *= smoothstep( radiusIn - 1., radius, distance );
                 }
                 else
                 {
-                    color.a = 0.;
+                    //color.a = 0.;
+                    discard;
                 }
             }
 
         }
         else
         {
-            //discard;
-            color.a = .1;
+            //color.a = .1;
+            discard;
         }
     }
     else
     {
         if( distance < radius )
         {
-            color.a = .1;
+            color.a = smoothstep( radius + 1., radius, distance );
         }
         else
         {
-            //discard;
+            discard;
         }
     }
 
