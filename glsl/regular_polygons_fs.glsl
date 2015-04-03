@@ -77,7 +77,7 @@ void main()
     }
     else
     {
-        if( distance < radius )
+        if( distance < radius + 1. )
         {
             color.a = smoothstep( radius + 1., radius, distance );
         }
